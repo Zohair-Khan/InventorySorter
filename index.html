@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staple Sorter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loading" class="overlay">
+    <div class="spinner"></div>
+    <p id="loading-msg">Loading…</p>
+  </div>
+
+  <div id="setup-needed" class="center-screen" hidden>
+    <div class="panel narrow stack">
+      <h1>Almost there</h1>
+      <p>Open <code>config.js</code> and fill in your Supabase project URL and key. README.md has the full setup.</p>
+    </div>
+  </div>
+
+  <div id="fatal" class="center-screen" hidden>
+    <div class="panel narrow stack">
+      <h1>Couldn't load</h1>
+      <p id="fatal-msg"></p>
+      <button type="button" class="btn primary" onclick="location.reload()">Try again</button>
+    </div>
+  </div>
+
+  <div id="login" class="center-screen" hidden>
+    <form id="login-form" class="panel narrow stack">
+      <h1>Staple Sorter</h1>
+      <label>Email<input name="email" type="email" autocomplete="username" required></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn primary" type="submit">Sign in</button>
+      <p id="login-error" class="error"></p>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="brand">Staple Sorter</div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Find a card by name or passcode" autocomplete="off" spellcheck="false">
+        <div id="search-results" class="search-results" hidden></div>
+      </div>
+      <nav class="tabs">
+        <button type="button" data-view="collection">Collection</button>
+        <button type="button" data-view="categories">Categories</button>
+        <button type="button" data-view="import">Import</button>
+      </nav>
+      <button type="button" class="btn ghost" id="sign-out">Sign out</button>
+    </header>
+
+    <main>
+      <section id="view-collection" class="view">
+        <div class="toolbar">
+          <span id="stats" class="muted"></span>
+          <select id="jump" aria-label="Jump to section"></select>
+          <div class="seg">
+            <button type="button" data-layout="grid">Grid</button>
+            <button type="button" data-layout="list">List</button>
+          </div>
+        </div>
+        <div id="collection"></div>
+      </section>
+
+      <section id="view-categories" class="view" hidden></section>
+
+      <section id="view-import" class="view" hidden>
+        <div class="panel stack">
+          <h2>Import a deck list</h2>
+          <p class="muted">Paste a .ydk file, or any list of passcodes one per line. Repeated copies and alt-art passcodes collapse to one entry per card.</p>
+          <textarea id="imp-text" rows="10" spellcheck="false" placeholder="#main&#10;14558127&#10;14558127&#10;#extra&#10;…"></textarea>
+          <div class="row wrap">
+            <label class="btn file-btn">Open .ydk file<input id="imp-file" type="file" accept=".ydk,.txt" hidden></label>
+            <span class="muted">Include:</span>
+            <label class="check"><input type="checkbox" id="imp-main" checked> Main</label>
+            <label class="check"><input type="checkbox" id="imp-extra" checked> Extra</label>
+            <label class="check"><input type="checkbox" id="imp-side" checked> Side</label>
+          </div>
+          <div class="grid2">
+            <label>Category<select id="imp-cat"></select></label>
+            <label>Package<select id="imp-pkg"></select></label>
+          </div>
+          <label id="imp-newpkg-wrap" hidden>New package name<input id="imp-newpkg" placeholder="Leave blank to use the first card's name"></label>
+          <div class="row">
+            <button type="button" class="btn primary" id="imp-preview">Preview import</button>
+            <button type="button" class="btn ghost" id="imp-clear">Clear</button>
+          </div>
+          <div id="imp-result"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="modal">
+    <div class="modal-inner">
+      <button type="button" class="icon modal-close" aria-label="Close">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
